@@ -39,11 +39,6 @@ const Contact = () => {
           </form>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white text-center p-4 mt-10">
-        &copy; 2025 Doctor Appointment System. All Rights Reserved.
-      </footer>
     </div>
   );
 };
