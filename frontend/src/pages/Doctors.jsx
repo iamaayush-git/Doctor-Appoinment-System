@@ -21,9 +21,9 @@ const Doctors = () => {
 
   return (
     <div className=' mt-10'>
-      {/* left section */}
       <h2 className='text-gray-700 font-sans text-2xl'>Browse through the doctor specialist</h2>
       <div className='flex items-start justify-between mt-10'>
+        {/* left section */}
         <div className=' p-5 space-y-5'>
           <p onClick={() => { speciality === 'General physician' ? navigate("/doctors") : navigate('/doctors/General physician') }} className={`border-b cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md transition-all duration-200 ${speciality === 'General physician' ? "border-2 border-green-500" : ""} `}>General physician</p>
           <p onClick={() => { speciality === 'Gynecologist' ? navigate("/doctors") : navigate('/doctors/Gynecologist') }} className={`border-b cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md transition-all duration-200 ${speciality === 'Gynecologist' ? "border-2 border-green-500" : ""} `}>Gynecologist</p>
