@@ -16,6 +16,13 @@ const addDoctor = async (req, res) => {
         message: "All fields are required"
       })
     }
+    const existDoctor = await doctorModel.findOne({ email })
+    if (existDoctor) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exist"
+      })
+    }
 
     if (!validator.isEmail(email)) {
       return res.status(400).json({
