@@ -53,10 +53,6 @@ const AddDoctor = () => {
       formData.append('about', doctorData.about)
       formData.append('degree', doctorData.education)
 
-      formData.forEach((value, key) => {
-        console.log(`${key} = ${value}`)
-      });
-
       const response = await axios.post(backendUrl + "/api/admin/add-doctor", formData, {
         headers: {
           adminToken
@@ -65,7 +61,19 @@ const AddDoctor = () => {
       if (response.data.success === true) {
         toast.success(response.data.message);
       }
-
+      setDoctorData({
+        name: "",
+        email: "",
+        password: "",
+        speciality: "General physician",
+        experience: "1 Year",
+        address1: "",
+        address2: "",
+        fees: "",
+        about: "",
+        education: ""
+      })
+      setDoctorImg(false);
       setLoading(false)
 
     } catch (error) {
@@ -90,19 +98,19 @@ const AddDoctor = () => {
         <div className='w-1/2 space-y-4'>
           <div className='text-gray-700'>
             <p>Doctor Name</p>
-            <input onChange={handleDoctorData} className='w-full border outline-none p-2 rounded-md' name='name' type="text" placeholder='Name' />
+            <input onChange={handleDoctorData} value={doctorData.name} className='w-full border outline-none p-2 rounded-md' name='name' type="text" placeholder='Name' />
           </div>
           <div className='text-gray-700'>
             <p>Doctor Email</p>
-            <input onChange={handleDoctorData} className='w-full border outline-none p-2 rounded-md' name='email' type="email" placeholder='Email' />
+            <input onChange={handleDoctorData} value={doctorData.email} className='w-full border outline-none p-2 rounded-md' name='email' type="email" placeholder='Email' />
           </div>
           <div className='text-gray-700'>
             <p>Password</p>
-            <input onChange={handleDoctorData} className='w-full border outline-none p-2 rounded-md' name='password' type="password" placeholder='Password' />
+            <input onChange={handleDoctorData} value={doctorData.password} className='w-full border outline-none p-2 rounded-md' name='password' type="password" placeholder='Password' />
           </div>
           <div>
             <p>Experience</p>
-            <select defaultValue={"1 Year"} onChange={handleDoctorData} className='w-full p-2 border outline-none rounded-md text-gray-700' name="experience" id="">
+            <select value={doctorData.experience} onChange={handleDoctorData} className='w-full p-2 border outline-none rounded-md text-gray-700' name="experience" id="">
               <option value="1 Year">1 Year</option>
               <option value="2 Year">2 Years</option>
               <option value="3 Year">3 Years</option>
@@ -111,14 +119,14 @@ const AddDoctor = () => {
           </div>
           <div className='text-gray-700'>
             <p>Fees</p>
-            <input onChange={handleDoctorData} name='fees' className='w-full border outline-none p-2 rounded-md' type="number" placeholder='Fees' />
+            <input onChange={handleDoctorData} name='fees' value={doctorData.fees} className='w-full border outline-none p-2 rounded-md' type="number" placeholder='Fees' />
           </div>
         </div>
         {/* right */}
         <div className='w-1/2 space-y-4'>
           <div className='w-full'>
             <p>Speciality</p>
-            <select defaultValue={"General physician"} onChange={handleDoctorData} className='w-full p-2 border outline-none rounded-md text-gray-700' name="speciality" id="">
+            <select value={doctorData.speciality} onChange={handleDoctorData} className='w-full p-2 border outline-none rounded-md text-gray-700' name="speciality" id="">
               <option value="General physician">General physician</option>
               <option value="Gynecologist">Gynecologist</option>
               <option value="Dermatologist">Dermatologist</option>
@@ -129,20 +137,20 @@ const AddDoctor = () => {
           </div>
           <div className='text-gray-700'>
             <p>Education</p>
-            <input onChange={handleDoctorData} className='w-full border outline-none p-2 rounded-md' type="text" placeholder='Education' name='education' />
+            <input onChange={handleDoctorData} value={doctorData.education} className='w-full border outline-none p-2 rounded-md' type="text" placeholder='Education' name='education' />
           </div>
           <div className='text-gray-700'>
             <p>Address</p>
             <div className='space-y-3'>
-              <input onChange={handleDoctorData} className='w-full border outline-none p-2 rounded-md' type="text" placeholder='Address 1' name='address1' />
-              <input onChange={handleDoctorData} className='w-full border outline-none p-2 rounded-md' type="text" placeholder='Address 2' name='address2' />
+              <input onChange={handleDoctorData} value={doctorData.address1} className='w-full border outline-none p-2 rounded-md' type="text" placeholder='Address 1' name='address1' />
+              <input onChange={handleDoctorData} value={doctorData.address2} className='w-full border outline-none p-2 rounded-md' type="text" placeholder='Address 2' name='address2' />
             </div>
           </div>
         </div>
       </div>
       <div className='w-2/3 mt-4 text-gray-700'>
         <p>About Doctor</p>
-        <textarea onChange={handleDoctorData} className='w-full h-[20vh] border outline-none p-2' placeholder='Enter something about yourself...' name="about" id=""></textarea>
+        <textarea onChange={handleDoctorData} value={doctorData.about} className='w-full h-[20vh] border outline-none p-2' placeholder='Enter something about yourself...' name="about" id=""></textarea>
       </div>
       <button disabled={loading} onClick={handleAddDoctor} className='flex items-center justify-center gap-3 w-40 py-3 bg-blue-500 cursor-pointer rounded-md border-none outline-none text-white hover:bg-blue-700 duration-200 mt-5'> {loading ? <span className='flex items-center justify-center gap-3 disabled:opacity-20 cursor-not-allowed'>Please wait <AiOutlineLoading3Quarters size={16} className='animate-spin' /></span> : "Add Doctor"} </button>
     </div>

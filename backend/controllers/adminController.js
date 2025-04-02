@@ -108,4 +108,26 @@ const loginAdmin = async (req, res) => {
   }
 }
 
-export { addDoctor, loginAdmin }
+const allDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find().select('-password');
+    if (!doctors) {
+      return res.status(404).json({
+        success: false,
+        message: "Doctors not found"
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All doctors",
+      doctors
+    })
+
+
+  } catch (error) {
+
+  }
+}
+
+export { addDoctor, loginAdmin, allDoctors }
