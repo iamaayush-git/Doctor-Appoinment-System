@@ -9,16 +9,33 @@ import MyAppoinments from "./pages/MyAppoinments"
 import Appoinment from "./pages/Appoinment"
 import Navbar from "./components/Navbar"
 import { setDoctor } from './redux/slices/doctorSlice'
-import { useSelector, useDispatch } from "react-redux";
-import { doctors } from './assets/assets_frontend/assets'
+import { useDispatch } from "react-redux";
 import Footer from './components/Footer'
 import Login from './pages/Login'
+import axios from "axios"
+import { toast } from "react-toastify"
 
 const App = () => {
   const dispatch = useDispatch();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
-    dispatch(setDoctor(doctors))
+    fetchDoctorList();
   }, [])
+
+  const fetchDoctorList = async () => {
+    try {
+      const response = await axios.get(backendUrl + "/api/doctor/doctor-list");
+      console.log(response.data.doctors)
+      if (response.data.success === true) {
+        dispatch(setDoctor(response.data.doctors))
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.message)
+    }
+  }
+
 
 
   return (
