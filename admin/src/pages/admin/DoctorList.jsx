@@ -1,10 +1,33 @@
 import React from 'react'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import axios from 'axios'
+import { toast } from "react-toastify"
+import { setDoctor } from '../../redux/slices/doctorSlice.js'
 
 const DoctorList = () => {
 
   const { doctors } = useSelector(state => state.doctor);
-  console.log(doctors)
+  const { adminToken } = useSelector(state => state.admin)
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const dispatch = useDispatch();
+
+  const handleCheckbox = async (docId) => {
+    try {
+      const response = await axios.post(backendUrl + "/api/admin/change-availability", { docId }, {
+        headers: {
+          admintoken: adminToken
+        }
+      })
+      if (response.data.success === true) {
+        dispatch(setDoctor(response.data.doctors))
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response?.data?.message)
+    }
+  }
+
 
   return doctors.length > 0 ? (
     <div>
@@ -20,7 +43,7 @@ const DoctorList = () => {
               <p className='text-sm font-medium'>{item.speciality}</p>
             </div>
             <div className='text-gray-700 p-3 pt-0 flex items-center gap-3'>
-              <input className='cursor-pointer' type="checkbox" checked={item.available} />
+              <input onChange={() => handleCheckbox(item._id)} className='cursor-pointer' type="checkbox" checked={item.available} />
               <p>Available</p>
             </div>
           </div>
