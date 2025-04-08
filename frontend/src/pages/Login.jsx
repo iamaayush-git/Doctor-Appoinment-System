@@ -1,24 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios"
+import { toast } from "react-toastify"
+import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux"
+import { setUser } from "../redux/slices/userSlice.js";
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
+  const { userToken } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userToken) {
+      return navigate("/");
+    }
+  }, [])
+
+  const dispatch = useDispatch();
   const [state, setState] = useState("Login");
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-    alert("Login functionality will be implemented soon!");
+    try {
+      const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/user/user-login", { email, password })
+      if (response.data.success === true) {
+        dispatch(setUser({ username: response.data.name, token: response.data.token }))
+        toast.success(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.message);
+    }
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("username:", username);
-    alert("signup functionality will be implemented soon!");
+    try {
+      const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/user/user-register", { email, password, name: username })
+      if (response.data.success === true) {
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setState("Login")
+        toast.success(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.message);
+    }
 
   }
 
@@ -91,8 +122,8 @@ const Login = () => {
             Login
           </a></p>
         }
-
       </div>
+      <ToastContainer />
     </div>
   );
 };

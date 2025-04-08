@@ -26,7 +26,6 @@ const App = () => {
   const fetchDoctorList = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/doctor/doctor-list");
-      console.log(response.data.doctors)
       if (response.data.success === true) {
         dispatch(setDoctor(response.data.doctors))
       }
@@ -35,8 +34,6 @@ const App = () => {
       toast.error(error.response.data.message)
     }
   }
-
-
 
   return (
     <div className='w-[90vw] mx-auto'>
