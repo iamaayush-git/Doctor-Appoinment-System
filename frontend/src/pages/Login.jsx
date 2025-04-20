@@ -28,6 +28,7 @@ const Login = () => {
       if (response.data.success === true) {
         dispatch(setUser({ username: response.data.name, token: response.data.token }))
         toast.success(response.data.message)
+        return navigate("/")
       }
     } catch (error) {
       console.log(error)
@@ -123,7 +124,6 @@ const Login = () => {
           </a></p>
         }
       </div>
-      <ToastContainer />
     </div>
   );
 };

@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { assets } from '../assets/assets_frontend/assets'
 import { Link, useNavigate } from "react-router-dom"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeUser } from '../redux/slices/userSlice.js';
+import { toast, ToastContainer } from "react-toastify"
 
 const Navbar = () => {
   const [selectNav, setSelectNav] = useState(0);
   const navigate = useNavigate();
   const { userToken } = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    // just wait for this implementation
+    dispatch(removeUser());
+    toast.success("Successfully logged out");
+    return navigate("/")
   }
 
   return (
@@ -52,7 +57,7 @@ const Navbar = () => {
           </div>
         </div> : <button onClick={() => navigate('/login')} className='bg-orange-500 text-white px-2 py-3 font-light rounded-md cursor-pointer'>CREATE ACCOUNT</button>
       }
-
+      <ToastContainer />
     </div>
   )
 }
